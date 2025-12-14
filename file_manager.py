@@ -4,9 +4,9 @@ while True:
     print("\n1. Create file")
     print("2. Read file")
     print("3. Delete file")
-    print("4. List files")
-    print("5. Append to file")   # NEW
-    print("6. Exit")             # NEW
+    print("4. List files")  # List files in current directory with sizes
+    print("5. Append to file")  # Add text to an existing file
+    print("6. Exit")
 
     choice = input("Choose an option: ")
 
@@ -38,32 +38,30 @@ while True:
             print("File not found.")
 
     elif choice == "4":
-        files = os.listdir()
+        files = os.listdir()  # Get list of all files and directories
 
         if not files:
             print("No files found.")
         else:
             for f in files:
-                print(f)
+                if os.path.isfile(f):
+                    size = os.path.getsize(f)  # Get file size
+                    print(f"{f} - {size} bytes")
+                else:
+                    print(f"{f} (directory)")
 
-    # ===============================
-    # NEW APPEND OPTION STARTS HERE
-    # ===============================
-    elif choice == "5":           # NEW
-        filename = input("File name: ")  # NEW
+    elif choice == "5":
+        filename = input("File name: ")
 
-        if os.path.exists(filename):      # NEW
-            text = input("Text to append: ")  # NEW
-            with open(filename, "a") as file:  # NEW (append mode)
-                file.write("\n" + text)   # NEW
-            print("Text appended.")       # NEW
+        if os.path.exists(filename):
+            text = input("Text to append: ")
+            with open(filename, "a") as file:  # Append mode
+                file.write("\n" + text)
+            print("Text appended.")
         else:
-            print("File not found.")      # NEW
-    # ===============================
-    # NEW APPEND OPTION ENDS HERE
-    # ===============================
+            print("File not found.")
 
-    elif choice == "6":           # NEW
+    elif choice == "6":
         print("Goodbye!")
         break
 
