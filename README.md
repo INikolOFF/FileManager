@@ -21,7 +21,7 @@ Available actions
 Future improvements
 
 	•	✓ Add an Append option to add text to an existing file 
-	•	Show file size when listing files
+	•	✓ Show file size when listing files
 	•	Ask for confirmation before deleting a file
 	•	Handle errors with try / except instead of only if checks
 	•	Add folder support (create, delete, list folders)
