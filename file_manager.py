@@ -31,11 +31,15 @@ while True:
     elif choice == "3":
         filename = input("File name: ")
 
-        if os.path.exists(filename):
-            os.remove(filename)
-            print("File deleted.")
+        if os.path.exists(filename) and os.path.isfile(filename):
+            confirm = input("Are you sure you want to delete this file? (yes/no): ")  # confirmation
+            if confirm.lower() == "yes":
+                os.remove(filename)
+                print("File deleted.")
+            else:
+                print("Deletion cancelled.")
         else:
-            print("File not found.")
+            print("File not found or it is a directory.")
 
     elif choice == "4":
         files = os.listdir()  # Get list of all files and directories
