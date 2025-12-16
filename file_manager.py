@@ -1,73 +1,72 @@
 import os
+import tkinter as tk
+from tkinter import messagebox
 
-while True:
-    print("\n1. Create file")
-    print("2. Read file")
-    print("3. Delete file")
-    print("4. List files")  # List files in current directory with sizes
-    print("5. Append to file")  # Add text to an existing file
-    print("6. Exit")
+# Create main window
+root = tk.Tk()
+root.title("Simple File Manager")
+root.geometry("400x300")
 
-    choice = input("Choose an option: ")
+# Entry for file name
+filename_entry = tk.Entry(root, width=40)
+filename_entry.pack(pady=5)
+filename_entry.insert(0, "Enter file name")
 
-    if choice == "1":
-        filename = input("File name: ")
-        content = input("Content: ")
+# Entry for content
+content_entry = tk.Entry(root, width=40)
+content_entry.pack(pady=5)
+content_entry.insert(0, "Enter content")
 
-        with open(filename, "w") as file:
-            file.write(content)
+# Create file
+def create_file():
+    filename = filename_entry.get()
+    content = content_entry.get()
 
-        print("File created.")
+    with open(filename, "w") as file:
+        file.write(content)
 
-    elif choice == "2":
-        filename = input("File name: ")
+    messagebox.showinfo("Success", "File created!")
 
-        if os.path.exists(filename):
-            with open(filename, "r") as file:
-                print(file.read())
-        else:
-            print("File not found.")
+# Read file
+def read_file():
+    filename = filename_entry.get()
 
-    elif choice == "3":
-        filename = input("File name: ")
-
-        if os.path.exists(filename) and os.path.isfile(filename):
-            confirm = input("Are you sure you want to delete this file? (yes/no): ")  # confirmation
-            if confirm.lower() == "yes":
-                os.remove(filename)
-                print("File deleted.")
-            else:
-                print("Deletion cancelled.")
-        else:
-            print("File not found or it is a directory.")
-
-    elif choice == "4":
-        files = os.listdir()  # Get list of all files and directories
-
-        if not files:
-            print("No files found.")
-        else:
-            for f in files:
-                if os.path.isfile(f):
-                    size = os.path.getsize(f)  # Get file size
-                    print(f"{f} - {size} bytes")
-                else:
-                    print(f"{f} (directory)")
-
-    elif choice == "5":
-        filename = input("File name: ")
-
-        if os.path.exists(filename):
-            text = input("Text to append: ")
-            with open(filename, "a") as file:  # Append mode
-                file.write("\n" + text)
-            print("Text appended.")
-        else:
-            print("File not found.")
-
-    elif choice == "6":
-        print("Goodbye!")
-        break
-
+    if os.path.exists(filename):
+        with open(filename, "r") as file:
+            content = file.read()
+        messagebox.showinfo("File Content", content)
     else:
-        print("Invalid option.")
+        messagebox.showerror("Error", "File not found!")
+
+# Delete file (with confirmation)
+def delete_file():
+    filename = filename_entry.get()
+
+    if os.path.exists(filename):
+        confirm = messagebox.askyesno("Confirm", "Are you sure you want to delete this file?")
+        if confirm:
+            os.remove(filename)
+            messagebox.showinfo("Deleted", "File deleted!")
+    else:
+        messagebox.showerror("Error", "File not found!")
+
+# Append to file
+def append_file():
+    filename = filename_entry.get()
+    content = content_entry.get()
+
+    if os.path.exists(filename):
+        with open(filename, "a") as file:
+            file.write("\n" + content)
+        messagebox.showinfo("Success", "Text appended!")
+    else:
+        messagebox.showerror("Error", "File not found!")
+
+# Buttons
+tk.Button(root, text="Create File", width=20, command=create_file).pack(pady=3)
+tk.Button(root, text="Read File", width=20, command=read_file).pack(pady=3)
+tk.Button(root, text="Append File", width=20, command=append_file).pack(pady=3)
+tk.Button(root, text="Delete File", width=20, command=delete_file).pack(pady=3)
+
+# Start GUI
+root.mainloop()
