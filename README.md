@@ -31,5 +31,5 @@ Future improvements
     •	Add search functionality for files by name
 	•	Log all actions to a file (create, delete, read)
 	•	Add user roles (read-only vs admin)
-	•	Add a simple GUI using tkinter
+	•	✓ Add a simple GUI using tkinter
 	•	Add password protection
