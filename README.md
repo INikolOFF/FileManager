@@ -24,7 +24,7 @@ Future improvements
 	•	✓ Show file size when listing files
 	•	✓ Ask for confirmation before deleting a file
 	•	Handle errors with try / except instead of only if checks
-	•	Add folder support (create, delete, list folders)
+	•	✓ Add folder support (create, delete, list folders)
 	•	Allow navigation between directories (cd-like behavior)
 	•	Filter files by extension (e.g. show only .txt files)
 	•	Add timestamps (created / modified date)
