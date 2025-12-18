@@ -27,79 +27,99 @@ def create_file():
     filename = filename_entry.get()
     content = content_entry.get()
 
-    with open(filename, "w") as file:
-        file.write(content)
-
-    messagebox.showinfo("Success", "File created!")
+    try:
+        with open(filename, "w") as file:
+            file.write(content)
+        messagebox.showinfo("Success", "File created!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot create file:\n{e}")
 
 # Read file
 def read_file():
     filename = filename_entry.get()
 
-    if os.path.exists(filename):
+    try:
         with open(filename, "r") as file:
             content = file.read()
         messagebox.showinfo("File Content", content)
-    else:
+    except FileNotFoundError:
         messagebox.showerror("Error", "File not found!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot read file:\n{e}")
 
 # Delete file (with confirmation)
 def delete_file():
     filename = filename_entry.get()
 
-    if os.path.exists(filename):
-        confirm = messagebox.askyesno("Confirm", "Are you sure you want to delete this file?")
-        if confirm:
-            os.remove(filename)
-            messagebox.showinfo("Deleted", "File deleted!")
-    else:
-        messagebox.showerror("Error", "File not found!")
+    try:
+        if os.path.exists(filename):
+            confirm = messagebox.askyesno("Confirm", "Are you sure you want to delete this file?")
+            if confirm:
+                os.remove(filename)
+                messagebox.showinfo("Deleted", "File deleted!")
+        else:
+            messagebox.showerror("Error", "File not found!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot delete file:\n{e}")
 
 # Append to file
 def append_file():
     filename = filename_entry.get()
     content = content_entry.get()
 
-    if os.path.exists(filename):
+    try:
         with open(filename, "a") as file:
             file.write("\n" + content)
         messagebox.showinfo("Success", "Text appended!")
-    else:
+    except FileNotFoundError:
         messagebox.showerror("Error", "File not found!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot append to file:\n{e}")
 
 # Create folder
 def create_folder():
     folder_name = folder_entry.get()
 
-    if not os.path.exists(folder_name):
-        os.mkdir(folder_name)
-        messagebox.showinfo("Success", "Folder created!")
-    else:
-        messagebox.showerror("Error", "Folder already exists!")
+    try:
+        if not os.path.exists(folder_name):
+            os.mkdir(folder_name)
+            messagebox.showinfo("Success", "Folder created!")
+        else:
+            messagebox.showerror("Error", "Folder already exists!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot create folder:\n{e}")
 
 # Delete folder (with confirmation)
 def delete_folder():
     folder_name = folder_entry.get()
 
-    if os.path.exists(folder_name) and os.path.isdir(folder_name):
-        confirm = messagebox.askyesno(
-            "Confirm",
-            "Are you sure you want to delete this folder?\n(Folder must be empty)"
-        )
-        if confirm:
-            os.rmdir(folder_name)
-            messagebox.showinfo("Deleted", "Folder deleted!")
-    else:
-        messagebox.showerror("Error", "Folder not found!")
+    try:
+        if os.path.exists(folder_name) and os.path.isdir(folder_name):
+            confirm = messagebox.askyesno(
+                "Confirm",
+                "Are you sure you want to delete this folder?\n(Folder must be empty)"
+            )
+            if confirm:
+                os.rmdir(folder_name)
+                messagebox.showinfo("Deleted", "Folder deleted!")
+        else:
+            messagebox.showerror("Error", "Folder not found!")
+    except OSError:
+        messagebox.showerror("Error", "Folder is not empty!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot delete folder:\n{e}")
 
 # List folders
 def list_folders():
-    folders = [f for f in os.listdir() if os.path.isdir(f)]
+    try:
+        folders = [f for f in os.listdir() if os.path.isdir(f)]
 
-    if folders:
-        messagebox.showinfo("Folders", "\n".join(folders))
-    else:
-        messagebox.showinfo("Folders", "No folders found.")
+        if folders:
+            messagebox.showinfo("Folders", "\n".join(folders))
+        else:
+            messagebox.showinfo("Folders", "No folders found.")
+    except Exception as e:
+        messagebox.showerror("Error", f"Cannot list folders:\n{e}")
 
 # Buttons
 tk.Button(root, text="Create File", width=20, command=create_file).pack(pady=3)
